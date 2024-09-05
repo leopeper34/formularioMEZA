@@ -53,6 +53,10 @@
   }
 
   .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 220px;
     font-size: 1.1rem;
     padding: 12px 24px;
     margin: 12px;
@@ -66,6 +70,15 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     box-shadow: 0 4px 15px rgba(255, 137, 6, 0.3);
+    position: relative;
+    padding-right: 50px; /* Increase right padding to make room for indicators */
+  }
+
+  .btn-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    fill: var(--bg-color);
   }
 
   .btn:hover {
@@ -73,6 +86,27 @@
     transform: translateY(-3px);
     box-shadow: 0 6px 20px rgba(242, 95, 76, 0.4);
   }
+
+  .difficulty-indicator {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+  }
+
+  .difficulty-indicator .bar {
+    width: 4px;  /* Reduced from 8px */
+    height: 12px;  /* Slightly reduced from 16px */
+    background-color: var(--bg-color);
+    margin-left: 2px;  /* Reduced from 4px */
+    border-radius: 1px;  /* Adjusted for thinner bars */
+  }
+
+  #easy .difficulty-indicator .bar:nth-child(1) { height: 6px; }  /* Adjusted proportionally */
+  #medium .difficulty-indicator .bar:nth-child(2) { height: 9px; }  /* Adjusted proportionally */
+  #hard .difficulty-indicator .bar:nth-child(3) { height: 12px; }  /* Kept the same as the max height */
 
   .board {
     display: grid;
@@ -98,6 +132,26 @@
   .cell:hover {
     background-color: rgba(255, 255, 255, 0.2);
     transform: scale(1.05);
+  }
+
+  @keyframes appear {
+    from {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .cell .figure {
+    display: inline-block;
+    animation: appear 0.3s ease-out;
+  }
+
+  .cell.appear {
+    animation: none;
   }
 
   #status {
@@ -169,6 +223,64 @@
     margin-right: 10px;
   }
 
+  .settings-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    margin-top: 20px;
+    transition: transform 0.3s ease;
+  }
+
+  .settings-btn:hover {
+    transform: rotate(45deg);
+  }
+
+  .settings-btn svg {
+    width: 30px;
+    height: 30px;
+    fill: var(--primary-color);
+  }
+
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    background-color: var(--bg-color);
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid var(--primary-color);
+    width: 300px;
+    border-radius: 15px;
+  }
+
+  .setting {
+    margin-bottom: 15px;
+  }
+
+  .setting label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .setting input {
+    width: 100%;
+    padding: 5px;
+    font-size: 16px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--primary-color);
+    color: var(--text-color);
+    border-radius: 5px;
+  }
+
   @media (max-width: 480px) {
     .container {
       padding: 1rem;
@@ -199,14 +311,47 @@
 <div class="container" id="main-container">
   <h1>Tres en Ralla</h1>
   <div class="menu floating" id="menu">
-    <button class="btn" id="pvp">Jugar vs Persona</button>
-    <button class="btn" id="pvc">Jugar vs Consola</button>
+    <button class="btn" id="pvp">
+      <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+      </svg>
+      Jugar vs Persona
+    </button>
+    <button class="btn" id="pvc">
+      <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M22 14h-1c0-3.87-3.13-7-7-7h-1V5.73c.61-.35 1-1.02 1-1.73 0-1.1-.9-2-2-2s-2 .9-2 2c0 .71.39 1.38 1 1.73V7h-1c-3.87 0-7 3.13-7 7H2c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1h1v1c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-1h1c.55 0 1-.45 1-1v-3c0-.55-.45-1-1-1zM12 16c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+      </svg>
+      Jugar vs Consola
+    </button>
+    <button class="btn settings-btn" id="settings-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+        <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+      </svg>
+    </button>
   </div>
   <div class="difficulty floating" id="difficulty" style="display: none;">
     <h2>Selecciona la dificultad</h2>
-    <button class="btn" id="easy">Fácil</button>
-    <button class="btn" id="medium">Medio</button>
-    <button class="btn" id="hard">Avanzado</button>
+    <button class="btn" id="easy">
+      Fácil
+      <span class="difficulty-indicator">
+        <span class="bar"></span>
+      </span>
+    </button>
+    <button class="btn" id="medium">
+      Medio
+      <span class="difficulty-indicator">
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </span>
+    </button>
+    <button class="btn" id="hard">
+      Avanzado
+      <span class="difficulty-indicator">
+        <span class="bar"></span>
+        <span class="difficulty-indicator"><span class="bar"></span>
+        <span class="bar"></span>
+      </span>
+    </button>
     <button class="back-btn" id="back-to-menu">Volver al Menú</button>
   </div>
   <div class="game" id="game" style="display: none;">
@@ -234,6 +379,21 @@
     <div id="status">¡Turno del Jugador X!</div>
     <button class="back-btn" id="back-to-menu-from-game">Volver al Menú</button>
   </div>
+  <div id="settings-modal" class="modal">
+    <div class="modal-content">
+      <h2>Ajustes</h2>
+      <div class="setting">
+        <label for="figure-x">Figura para X:</label>
+        <input type="text" id="figure-x" maxlength="1" value="X">
+      </div>
+      <div class="setting">
+        <label for="figure-o">Figura para O:</label>
+        <input type="text" id="figure-o" maxlength="1" value="O">
+      </div>
+      <button id="save-settings" class="btn">Guardar</button>
+      <button id="close-settings" class="btn">Cerrar</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -251,6 +411,12 @@ const mediumButton = document.getElementById('medium');
 const hardButton = document.getElementById('hard');
 const backToMenuButton = document.getElementById('back-to-menu');
 const backToMenuFromGameButton = document.getElementById('back-to-menu-from-game');
+const settingsBtn = document.getElementById('settings-btn');
+const settingsModal = document.getElementById('settings-modal');
+const closeSettings = document.getElementById('close-settings');
+const saveSettings = document.getElementById('save-settings');
+const figureXInput = document.getElementById('figure-x');
+const figureOInput = document.getElementById('figure-o');
 
 let currentPlayer = 'X';
 let gameActive = true;
@@ -261,6 +427,9 @@ let scoreO = 0;
 const scoreXElement = document.getElementById('scoreX');
 const scoreOElement = document.getElementById('scoreO');
 const scoresContainer = document.getElementById('scores');
+
+let figureX = 'X';
+let figureO = 'O';
 
 const winningCombinations = [
   [0, 1, 2],
@@ -317,18 +486,18 @@ function handleCellClick(e) {
 }
 
 function placeMark(cell, mark) {
-  cell.textContent = mark;
+  cell.innerHTML = `<span class="figure">${mark === 'X' ? figureX : figureO}</span>`;
 }
 
 function swapTurns() {
   currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-  status.textContent = `Turno del Jugador ${currentPlayer}`;
+  status.textContent = `Turno del Jugador ${currentPlayer === 'X' ? figureX : figureO}`;
 }
 
 function checkWin() {
   return winningCombinations.some(combination => {
     return combination.every(index => {
-      return cells[index].textContent === currentPlayer;
+      return cells[index].textContent === (currentPlayer === 'X' ? figureX : figureO);
     });
   });
 }
@@ -341,7 +510,7 @@ function endGame(draw) {
   if (draw) {
     status.textContent = '¡Empate!';
   } else {
-    status.textContent = `¡Jugador ${currentPlayer} ha ganado!`;
+    status.textContent = `¡Jugador ${currentPlayer === 'X' ? figureX : figureO} ha ganado!`;
     highlightWinnerCells();
     if (currentPlayer === 'X') {
       scoreX++;
@@ -356,7 +525,7 @@ function endGame(draw) {
 
 function highlightWinnerCells() {
   winningCombinations.forEach(combination => {
-    if (combination.every(index => cells[index].textContent === currentPlayer)) {
+    if (combination.every(index => cells[index].textContent === (currentPlayer === 'X' ? figureX : figureO))) {
       combination.forEach(index => cells[index].classList.add('winner'));
     }
   });
@@ -461,7 +630,7 @@ function checkWinner() {
     if (cells[combo[0]].textContent === cells[combo[1]].textContent &&
         cells[combo[1]].textContent === cells[combo[2]].textContent &&
         cells[combo[0]].textContent !== '') {
-      return cells[combo[0]].textContent === 'O' ? 10 : -10;
+      return cells[combo[0]].textContent === figureO ? 10 : -10;
     }
   }
   if (checkDraw()) return 0;
@@ -469,8 +638,8 @@ function checkWinner() {
 }
 
 function updateScoreDisplay() {
-  scoreXElement.textContent = scoreX;
-  scoreOElement.textContent = scoreO;
+  scoreXElement.textContent = `${figureX}: ${scoreX}`;
+  scoreOElement.textContent = `${figureO}: ${scoreO}`;
 }
 
 function backToMainMenu() {
@@ -484,6 +653,27 @@ function backToMainMenu() {
   updateScoreDisplay();
   mainContainer.classList.add('floating');
 }
+
+settingsBtn.addEventListener('click', () => {
+  settingsModal.style.display = 'block';
+});
+
+closeSettings.addEventListener('click', () => {
+  settingsModal.style.display = 'none';
+});
+
+saveSettings.addEventListener('click', () => {
+  figureX = figureXInput.value || 'X';
+  figureO = figureOInput.value || 'O';
+  settingsModal.style.display = 'none';
+  resetGame();
+});
+
+window.addEventListener('click', (event) => {
+  if (event.target === settingsModal) {
+    settingsModal.style.display = 'none';
+  }
+});
 
 cells.forEach(cell => cell.addEventListener('click', handleCellClick));
 pvpButton.addEventListener('click', () => startGame(false));
