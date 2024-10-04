@@ -13,26 +13,28 @@
   }
 
   body {
-    font-family: 'Poppins', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    overflow: hidden;
+     font-family: 'Poppins', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  overflow-x: hidden; /* Evitar scroll horizontal */
   }
 
   .container {
-    text-align: center;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 2rem;
-    border-radius: 20px;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+     width: 100vw; /* Ocupa todo el ancho de la pantalla en computadoras */
+  max-width: 1200px; /* Limitar el ancho en dispositivos más grandes */
+  text-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   }
 
   h1 {
@@ -42,13 +44,13 @@
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   }
 
-  .menu, .game, .difficulty {
+  .menu, .game, .difficulty, .map-selection {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  .menu, .difficulty {
+  .menu, .difficulty, .map-selection {
     margin-bottom: 30px;
   }
 
@@ -71,7 +73,7 @@
     letter-spacing: 1px;
     box-shadow: 0 4px 15px rgba(255, 137, 6, 0.3);
     position: relative;
-    padding-right: 50px; /* Increase right padding to make room for indicators */
+    padding-right: 50px;
   }
 
   .btn-icon {
@@ -97,36 +99,92 @@
   }
 
   .difficulty-indicator .bar {
-    width: 4px;  /* Reduced from 8px */
-    height: 12px;  /* Slightly reduced from 16px */
+    width: 4px;  
+    height: 12px;  
     background-color: var(--bg-color);
-    margin-left: 2px;  /* Reduced from 4px */
-    border-radius: 1px;  /* Adjusted for thinner bars */
+    margin-left: 2px;  
+    border-radius: 1px;  
   }
 
-  #easy .difficulty-indicator .bar:nth-child(1) { height: 6px; }  /* Adjusted proportionally */
-  #medium .difficulty-indicator .bar:nth-child(2) { height: 9px; }  /* Adjusted proportionally */
-  #hard .difficulty-indicator .bar:nth-child(3) { height: 12px; }  /* Kept the same as the max height */
+  #easy .difficulty-indicator .bar:nth-child(1) { height: 6px; }
+  #medium .difficulty-indicator .bar:nth-child(2) { height: 9px; }
+  #hard .difficulty-indicator .bar:nth-child(3) { height: 12px; }
+
+  .map-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .map-slider {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .map-btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .map-btn:hover, .map-btn.active {
+    background-color: var(--secondary-color);
+    transform: translateY(-3px);
+  }
 
   .board {
     display: grid;
-    grid-template-columns: repeat(3, 100px);
     grid-gap: 10px;
     margin-bottom: 30px;
   }
 
+  .board.size-3x3 {
+    grid-template-columns: repeat(3, 100px);
+  }
+
+  .board.size-6x6 {
+    grid-template-columns: repeat(6, 60px);
+  }
+
+  .board.size-9x9 {
+    grid-template-columns: repeat(9, 40px);
+  }
+
   .cell {
-    width: 100px;
-    height: 100px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 2px solid var(--primary-color);
-    font-size: 3rem;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid var(--primary-color);
+    font-size: 2rem;
     cursor: pointer;
     transition: all 0.3s ease;
     border-radius: 15px;
+  }
+
+  .board.size-3x3 .cell {
+    width: 100px;
+    height: 100px;
+    font-size: 3rem;
+  }
+
+  .board.size-6x6 .cell {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+
+  .board.size-9x9 .cell {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
   }
 
   .cell:hover {
@@ -199,7 +257,7 @@
     animation: float 6s ease-in-out infinite;
   }
 
-  .difficulty h2 {
+  .difficulty h2, .map-selection h2 {
     color: var(--secondary-color);
     margin-bottom: 20px;
   }
@@ -281,10 +339,27 @@
     border-radius: 5px;
   }
 
+  #language-select {
+    width: 100%;
+    padding: 5px;
+    font-size: 16px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--primary-color);
+    color: var(--text-color);
+    border-radius: 5px;
+  }
+
   @media (max-width: 480px) {
-    .container {
-      padding: 1rem;
-    }
+  .container {
+    width: 90vw; /* Ocupa el 90% del ancho en móviles */
+    padding: 1rem;
+  }
+
+  body {
+    height: auto; /* Permite que el contenido se ajuste en altura en móviles */
+    overflow-x: hidden; /* Eliminar scroll horizontal en móviles */
+  }
+}
 
     h1 {
       font-size: 2rem;
@@ -303,7 +378,9 @@
       width: 80px;
       height: 80px;
       font-size: 2.5rem;
+	  
     }
+	
   }
 </style>
 </head>
@@ -324,8 +401,16 @@
       Jugar vs Consola
     </button>
     <button class="btn settings-btn" id="settings-btn">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
-        <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+      width="24" height="24">
+        <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61
+          l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41
+          h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87
+          C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58c-0.18,0.14-0.23,0.41-0.12,0.61
+          l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54c0.05,0.24,0.24,0.41,0.48,0.41
+          h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96c0.22,0.08,0.47,0,0.59-0.22
+          l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6
+          S13.98,15.6,12,15.6z"/>
       </svg>
     </button>
   </div>
@@ -353,6 +438,15 @@
       </span>
     </button>
     <button class="back-btn" id="back-to-menu">Volver al Menú</button>
+  </div>
+  <div class="map-selection floating" id="map-selection" style="display: none;">
+    <h2>Selecciona el tamaño del mapa</h2>
+    <div class="map-slider">
+      <button class="map-btn" id="map-3x3">3x3</button>
+      <button class="map-btn" id="map-6x6">6x6</button>
+      <button class="map-btn" id="map-9x9">9x9</button>
+    </div>
+    <button class="back-btn" id="back-to-menu-from-map">Volver al Menú</button>
   </div>
   <div class="game" id="game" style="display: none;">
     <div class="scores" id="scores" style="display: none;">
@@ -390,6 +484,13 @@
         <label for="figure-o">Figura para O:</label>
         <input type="text" id="figure-o" maxlength="1" value="O">
       </div>
+      <div class="setting">
+        <label for="language-select">Idioma / Language:</label>
+        <select id="language-select">
+          <option value="es">Español</option>
+          <option value="en">English</option>
+        </select>
+      </div>
       <button id="save-settings" class="btn">Guardar</button>
       <button id="close-settings" class="btn">Cerrar</button>
     </div>
@@ -400,16 +501,21 @@
 const mainContainer = document.getElementById('main-container');
 const menu = document.getElementById('menu');
 const difficulty = document.getElementById('difficulty');
+const mapSelection = document.getElementById('map-selection');
 const game = document.getElementById('game');
 const board = document.getElementById('board');
-const cells = document.querySelectorAll('[data-cell]');
+let cells = document.querySelectorAll('[data-cell]');
 const status = document.getElementById('status');
 const pvpButton = document.getElementById('pvp');
 const pvcButton = document.getElementById('pvc');
 const easyButton = document.getElementById('easy');
 const mediumButton = document.getElementById('medium');
 const hardButton = document.getElementById('hard');
+const map3x3Button = document.getElementById('map-3x3');
+const map6x6Button = document.getElementById('map-6x6');
+const map9x9Button = document.getElementById('map-9x9');
 const backToMenuButton = document.getElementById('back-to-menu');
+const backToMenuFromMapButton = document.getElementById('back-to-menu-from-map');
 const backToMenuFromGameButton = document.getElementById('back-to-menu-from-game');
 const settingsBtn = document.getElementById('settings-btn');
 const settingsModal = document.getElementById('settings-modal');
@@ -417,11 +523,14 @@ const closeSettings = document.getElementById('close-settings');
 const saveSettings = document.getElementById('save-settings');
 const figureXInput = document.getElementById('figure-x');
 const figureOInput = document.getElementById('figure-o');
+const languageSelect = document.getElementById('language-select');
 
+let currentLanguage = 'es';
 let currentPlayer = 'X';
 let gameActive = true;
 let isComputerOpponent = false;
 let computerDifficulty = 'easy';
+let currentMapSize = 3;
 let scoreX = 0;
 let scoreO = 0;
 const scoreXElement = document.getElementById('scoreX');
@@ -431,38 +540,257 @@ const scoresContainer = document.getElementById('scores');
 let figureX = 'X';
 let figureO = 'O';
 
-const winningCombinations = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
-  [0, 4, 8],
-  [2, 4, 6]
-];
+const languages = {
+  es: {
+    title: "Tres en Ralla",
+    pvp: "Jugar vs Persona",
+    pvc: "Jugar vs Consola",
+    settings: "Ajustes",
+    difficulty: "Selecciona la dificultad",
+    easy: "Fácil",
+    medium: "Medio",
+    hard: "Avanzado",
+    backToMenu: "Volver al Menú",
+    mapSelection: "Selecciona el tamaño del mapa",
+    playerX: "Jugador X",
+    playerO: "Jugador O",
+    turnX: "¡Turno del Jugador X!",
+    turnO: "¡Turno del Jugador O!",
+    draw: "¡Empate!",
+    won: "¡Jugador {player} ha ganado!",
+    figureX: "Figura para X:",
+    figureO: "Figura para O:",
+    save: "Guardar",
+    close: "Cerrar",
+    language: "Idioma"
+  },
+  en: {
+    title: "Tic Tac Toe",
+    pvp: "Play vs Person",
+    pvc: "Play vs Computer",
+    settings: "Settings",
+    difficulty: "Select difficulty",
+    easy: "Easy",
+    medium: "Medium",
+    hard: "Hard",
+    backToMenu: "Back to Menu",
+    mapSelection: "Select map size",
+    playerX: "Player X",
+    playerO: "Player O",
+    turnX: "Player X's turn!",
+    turnO: "Player O's turn!",
+    draw: "It's a draw!",
+    won: "Player {player} has won!",
+    figureX: "Figure for X:",
+    figureO: "Figure for O:",
+    save: "Save",
+    close: "Close",
+    language: "Language"
+  }
+};
+
+function switchLanguage(lang) {
+  currentLanguage = lang;
+  document.querySelector('h1').textContent = languages[lang].title;
+  document.getElementById('pvp').textContent = languages[lang].pvp;
+  document.getElementById('pvc').textContent = languages[lang].pvc;
+  document.querySelector('.modal-content h2').textContent = languages[lang].settings;
+  document.querySelector('label[for="figure-x"]').textContent = languages[lang].figureX;
+  document.querySelector('label[for="figure-o"]').textContent = languages[lang].figureO;
+  document.querySelector('label[for="language-select"]').textContent = languages[lang].language;
+  document.getElementById('save-settings').textContent = languages[lang].save;
+  document.getElementById('close-settings').textContent = languages[lang].close;
+  document.getElementById('easy').textContent = languages[lang].easy;
+  document.getElementById('medium').textContent = languages[lang].medium;
+  document.getElementById('hard').textContent = languages[lang].hard;
+  document.querySelector('#difficulty h2').textContent = languages[lang].difficulty;
+  document.querySelector('#map-selection h2').textContent = languages[lang].mapSelection;
+  document.querySelectorAll('.back-btn').forEach(btn => btn.textContent = languages[lang].backToMenu);
+  document.querySelector('.score:first-child .player').textContent = languages[lang].playerX + ':';
+  document.querySelector('.score:last-child .player').textContent = languages[lang].playerO + ':';
+  if (status.textContent.includes('X')) {
+    status.textContent = languages[lang].turnX;
+  } else if (status.textContent.includes('O')) {
+    status.textContent = languages[lang].turnO;
+  }
+}
+
+function swapTurns() {
+  currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+  status.textContent = currentPlayer === 'X' ? languages[currentLanguage].turnX : languages[currentLanguage].turnO;
+}
+
+function endGame(draw) {
+  if (draw) {
+    status.textContent = languages[currentLanguage].draw;
+  } else {
+    status.textContent = languages[currentLanguage].won.replace('{player}', currentPlayer === 'X' ? figureX : figureO);
+    highlightWinnerCells();
+    if (currentPlayer === 'X') {
+      scoreX++;
+    } else {
+      scoreO++;
+    }
+    updateScoreDisplay();
+  }
+  gameActive = false;
+  setTimeout(resetGame, 2000);
+}
+
+function getWinningCombinations(size) {
+  const combinations = [];
+  const winLength = size === 3 ? 3 : (size === 6 ? 4 : 5);
+  
+  // Rows
+  for (let i = 0; i < size; i++) {
+    for (let j = 0; j <= size - winLength; j++) {
+      combinations.push(Array.from({length: winLength}, (_, k) => i * size + j + k));
+    }
+  }
+  
+  // Columns
+  for (let i = 0; i < size; i++) {
+    for (let j = 0; j <= size - winLength; j++) {
+      combinations.push(Array.from({length: winLength}, (_, k) => (j + k) * size + i));
+    }
+  }
+  
+  // Diagonals (top-left to bottom-right)
+  for (let i = 0; i <= size - winLength; i++) {
+    for (let j = 0; j <= size - winLength; j++) {
+      combinations.push(Array.from({length: winLength}, (_, k) => (i + k) * size + j + k));
+    }
+  }
+  
+  // Diagonals (top-right to bottom-left)
+  for (let i = 0; i <= size - winLength; i++) {
+    for (let j = winLength - 1; j < size; j++) {
+      combinations.push(Array.from({length: winLength}, (_, k) => (i + k) * size + j - k));
+    }
+  }
+  
+  return combinations;
+}
+
+function checkWin() {
+  const winningCombinations = getWinningCombinations(currentMapSize);
+  return winningCombinations.some(combination => {
+    const [first, ...rest] = combination;
+    return cells[first].textContent && 
+           rest.every(index => cells[index].textContent === cells[first].textContent);
+  });
+}
+
+function computerMove() {
+  if (!gameActive) return;
+
+  let bestScore = -Infinity;
+  let bestMove;
+  let maxDepth;
+
+  switch (computerDifficulty) {
+    case 'easy':
+      maxDepth = 2;
+      break;
+    case 'medium':
+      maxDepth = 4;
+      break;
+    case 'hard':
+      maxDepth = 6;
+      break;
+    default:
+      maxDepth = 2;
+  }
+  
+  for (let i = 0; i < cells.length; i++) {
+    if (cells[i].textContent === '') {
+      cells[i].textContent = figureO;
+      let score = minimax(cells, 0, false, -Infinity, Infinity, maxDepth);
+      cells[i].textContent = '';
+      if (score > bestScore) {
+        bestScore = score;
+        bestMove = i;
+      }
+    }
+  }
+
+  if (bestMove !== undefined) {
+    placeMark(cells[bestMove], 'O');
+    if (checkWin()) {
+      endGame(false);
+    } else if (checkDraw()) {
+      endGame(true);
+    } else {
+      swapTurns();
+    }
+  }
+}
+
+function minimax(board, depth, isMaximizing, alpha, beta, maxDepth) {
+  if (checkWin()) {
+    return isMaximizing ? -10 + depth : 10 - depth;
+  } else if (checkDraw() || depth === maxDepth) {
+    return 0;
+  }
+
+  if (isMaximizing) {
+    let bestScore = -Infinity;
+    for (let i = 0; i < board.length; i++) {
+      if (board[i].textContent === '') {
+        board[i].textContent = figureO;
+        let score = minimax(board, depth + 1, false, alpha, beta, maxDepth);
+        board[i].textContent = '';
+        bestScore = Math.max(score, bestScore);
+        alpha = Math.max(alpha, score);
+        if (beta <= alpha) break;
+      }
+    }
+    return bestScore;
+  } else {
+    let bestScore = Infinity;
+    for (let i = 0; i < board.length; i++) {
+      if (board[i].textContent === '') {
+        board[i].textContent = figureX;
+        let score = minimax(board, depth + 1, true, alpha, beta, maxDepth);
+        board[i].textContent = '';
+        bestScore = Math.min(score, bestScore);
+        beta = Math.min(beta, score);
+        if (beta <= alpha) break;
+      }
+    }
+    return bestScore;
+  }
+}
 
 function startGame(vsComputer) {
-  if (vsComputer) {
-    menu.style.display = 'none';
-    difficulty.style.display = 'flex';
-  } else {
-    menu.style.display = 'none';
-    game.style.display = 'flex';
-    isComputerOpponent = false;
-    scoresContainer.style.display = 'flex';
-    resetGame();
-  }
+  menu.style.display = 'none';
+  isComputerOpponent = vsComputer;
   mainContainer.classList.remove('floating');
+  
+  if (vsComputer) {
+    difficulty.style.display = 'flex';
+    currentMapSize = 3; // Force 3x3 map for computer opponent
+  } else {
+    mapSelection.style.display = 'flex';
+  }
+}
+
+function selectMap(size) {
+  currentMapSize = size;
+  mapSelection.style.display = 'none';
+  
+  game.style.display = 'flex';
+  scoresContainer.style.display = 'flex';
+  resetGame();
 }
 
 function setDifficulty(level) {
   computerDifficulty = level;
   difficulty.style.display = 'none';
   game.style.display = 'flex';
-  isComputerOpponent = true;
+  scoresContainer.style.display = 'flex';
+  currentMapSize = 3; // Ensure 3x3 map for computer opponent
   resetGame();
-  mainContainer.classList.remove('floating');
 }
 
 function handleCellClick(e) {
@@ -489,41 +817,12 @@ function placeMark(cell, mark) {
   cell.innerHTML = `<span class="figure">${mark === 'X' ? figureX : figureO}</span>`;
 }
 
-function swapTurns() {
-  currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-  status.textContent = `Turno del Jugador ${currentPlayer === 'X' ? figureX : figureO}`;
-}
-
-function checkWin() {
-  return winningCombinations.some(combination => {
-    return combination.every(index => {
-      return cells[index].textContent === (currentPlayer === 'X' ? figureX : figureO);
-    });
-  });
-}
-
 function checkDraw() {
   return Array.from(cells).every(cell => cell.textContent !== '');
 }
 
-function endGame(draw) {
-  if (draw) {
-    status.textContent = '¡Empate!';
-  } else {
-    status.textContent = `¡Jugador ${currentPlayer === 'X' ? figureX : figureO} ha ganado!`;
-    highlightWinnerCells();
-    if (currentPlayer === 'X') {
-      scoreX++;
-    } else {
-      scoreO++;
-    }
-    updateScoreDisplay();
-  }
-  gameActive = false;
-  setTimeout(resetGame, 2000);
-}
-
 function highlightWinnerCells() {
+  const winningCombinations = getWinningCombinations(currentMapSize);
   winningCombinations.forEach(combination => {
     if (combination.every(index => cells[index].textContent === (currentPlayer === 'X' ? figureX : figureO))) {
       combination.forEach(index => cells[index].classList.add('winner'));
@@ -532,109 +831,22 @@ function highlightWinnerCells() {
 }
 
 function resetGame() {
-  cells.forEach(cell => {
-    cell.textContent = '';
-    cell.classList.remove('winner');
-  });
+  board.innerHTML = '';
+  board.className = `board size-${currentMapSize}x${currentMapSize}`;
+  for (let i = 0; i < currentMapSize * currentMapSize; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    cell.setAttribute('data-cell', '');
+    cell.addEventListener('click', handleCellClick);
+    board.appendChild(cell);
+  }
+  cells = document.querySelectorAll('[data-cell]');
   currentPlayer = 'X';
   gameActive = true;
-  status.textContent = `¡Turno del Jugador X!`;
+  status.textContent = languages[currentLanguage].turnX;
   if (isComputerOpponent && currentPlayer === 'O') {
     setTimeout(computerMove, 500);
   }
-}
-
-function computerMove() {
-  if (!gameActive) return;
-
-  let move;
-  switch (computerDifficulty) {
-    case 'easy':
-      move = getRandomMove();
-      break;
-    case 'medium':
-      move = Math.random() < 0.5 ? getBestMove() : getRandomMove();
-      break;
-    case 'hard':
-      move = getBestMove();
-      break;
-  }
-
-  if (move !== null) {
-    placeMark(cells[move], 'O');
-    if (checkWin()) {
-      endGame(false);
-    } else if (checkDraw()) {
-      endGame(true);
-    } else {
-      swapTurns();
-    }
-  }
-}
-
-function getRandomMove() {
-  let availableMoves = Array.from(cells).map((cell, index) => cell.textContent === '' ? index : null).filter(index => index !== null);
-  return availableMoves[Math.floor(Math.random() * availableMoves.length)];
-}
-
-function getBestMove() {
-  let bestScore = -Infinity;
-  let bestMove;
-  for (let i = 0; i < 9; i++) {
-    if (cells[i].textContent === '') {
-      cells[i].textContent = 'O';
-      let score = minimax(cells, 0, false);
-      cells[i].textContent = '';
-      if (score > bestScore) {
-        bestScore = score;
-        bestMove = i;
-      }
-    }
-  }
-  return bestMove;
-}
-
-function minimax(board, depth, isMaximizing) {
-  let result = checkWinner();
-  if (result !== null) {
-    return result;
-  }
-
-  if (isMaximizing) {
-    let bestScore = -Infinity;
-    for (let i = 0; i < 9; i++) {
-      if (board[i].textContent === '') {
-        board[i].textContent = 'O';
-        let score = minimax(board, depth + 1, false);
-        board[i].textContent = '';
-        bestScore = Math.max(score, bestScore);
-      }
-    }
-    return bestScore;
-  } else {
-    let bestScore = Infinity;
-    for (let i = 0; i < 9; i++) {
-      if (board[i].textContent === '') {
-        board[i].textContent = 'X';
-        let score = minimax(board, depth + 1, true);
-        board[i].textContent = '';
-        bestScore = Math.min(score, bestScore);
-      }
-    }
-    return bestScore;
-  }
-}
-
-function checkWinner() {
-  for (let combo of winningCombinations) {
-    if (cells[combo[0]].textContent === cells[combo[1]].textContent &&
-        cells[combo[1]].textContent === cells[combo[2]].textContent &&
-        cells[combo[0]].textContent !== '') {
-      return cells[combo[0]].textContent === figureO ? 10 : -10;
-    }
-  }
-  if (checkDraw()) return 0;
-  return null;
 }
 
 function updateScoreDisplay() {
@@ -645,6 +857,7 @@ function updateScoreDisplay() {
 function backToMainMenu() {
   game.style.display = 'none';
   difficulty.style.display = 'none';
+  mapSelection.style.display = 'none';
   menu.style.display = 'flex';
   scoresContainer.style.display = 'none';
   resetGame();
@@ -675,13 +888,22 @@ window.addEventListener('click', (event) => {
   }
 });
 
+languageSelect.addEventListener('change', (e) => {
+  switchLanguage(e.target.value);
+});
+
+switchLanguage('es');
 cells.forEach(cell => cell.addEventListener('click', handleCellClick));
 pvpButton.addEventListener('click', () => startGame(false));
 pvcButton.addEventListener('click', () => startGame(true));
+map3x3Button.addEventListener('click', () => selectMap(3));
+map6x6Button.addEventListener('click', () => selectMap(6));
+map9x9Button.addEventListener('click', () => selectMap(9));
 easyButton.addEventListener('click', () => setDifficulty('easy'));
 mediumButton.addEventListener('click', () => setDifficulty('medium'));
 hardButton.addEventListener('click', () => setDifficulty('hard'));
 backToMenuButton.addEventListener('click', backToMainMenu);
+backToMenuFromMapButton.addEventListener('click', backToMainMenu);
 backToMenuFromGameButton.addEventListener('click', backToMainMenu);
 </script>
 </body></html>
