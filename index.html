@@ -351,7 +351,7 @@
 
   @media (max-width: 480px) {
   .container {
-    width: 90vw; /* Ocupa el 90% del ancho en móviles */
+    width: 90vw; /* Ajustar el contenedor al 90% del ancho de la pantalla */
     padding: 1rem;
   }
 
@@ -364,43 +364,44 @@
     padding: 10px 20px;
   }
 
-  /* Ajustar el tamaño del tablero y las celdas en móviles */
-  .board {
-    grid-template-columns: repeat(3, 50px); /* Ajustar las celdas a 50px en 3x3 */
-  }
-
-  .cell {
-    width: 50px;
-    height: 50px;
-    font-size: 1.5rem; /* Tamaño más pequeño para el contenido */
-  }
-
-  .board.size-6x6 {
-    grid-template-columns: repeat(6, 40px); /* Ajustar las celdas a 40px en 6x6 */
-  }
-
+  /* Ajustar las celdas y el tablero en la versión móvil */
   .board.size-9x9 {
-    grid-template-columns: repeat(9, 30px); /* Ajustar las celdas a 30px en 9x9 */
-  }
-
-  .board.size-6x6 .cell {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
+    grid-template-columns: repeat(9, 8vw); /* Tamaño de celdas basado en el ancho de la pantalla */
   }
 
   .board.size-9x9 .cell {
-    width: 30px;
-    height: 30px;
-    font-size: 0.8rem;
+    width: 8vw;  /* El ancho de cada celda será el 8% del ancho de la pantalla */
+    height: 8vw; /* El alto será igual al ancho */
+    font-size: 0.7rem; /* Ajustar el tamaño del texto dentro de las celdas */
+  }
+
+  .board.size-6x6 {
+    grid-template-columns: repeat(6, 12vw); /* Ajustar las celdas para el tablero 6x6 */
+  }
+
+  .board.size-6x6 .cell {
+    width: 12vw; /* El ancho de cada celda será el 12% del ancho de la pantalla */
+    height: 12vw;
+    font-size: 1rem;
+  }
+
+  .board.size-3x3 {
+    grid-template-columns: repeat(3, 25vw); /* Ajustar las celdas para el tablero 3x3 */
+  }
+
+  .board.size-3x3 .cell {
+    width: 25vw;
+    height: 25vw;
+    font-size: 1.5rem;
   }
 
   body {
-    height: 100vh; /* Asegurar que el cuerpo ocupe todo el alto de la pantalla */
-    overflow-x: hidden; /* Evitar scroll horizontal en móviles */
-    overflow-y: hidden; /* Evitar scroll vertical en móviles */
+    height: 100vh;
+    overflow-x: hidden; /* Evitar scroll horizontal */
+    overflow-y: hidden; /* Evitar scroll vertical */
   }
 }
+
 
 </style>
 </head>
