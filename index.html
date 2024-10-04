@@ -355,33 +355,53 @@
     padding: 1rem;
   }
 
+  h1 {
+    font-size: 2rem;
+  }
+
+  .btn {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+  }
+
+  /* Ajustar el tamaño del tablero y las celdas en móviles */
+  .board {
+    grid-template-columns: repeat(3, 50px); /* Ajustar las celdas a 50px en 3x3 */
+  }
+
+  .cell {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem; /* Tamaño más pequeño para el contenido */
+  }
+
+  .board.size-6x6 {
+    grid-template-columns: repeat(6, 40px); /* Ajustar las celdas a 40px en 6x6 */
+  }
+
+  .board.size-9x9 {
+    grid-template-columns: repeat(9, 30px); /* Ajustar las celdas a 30px en 9x9 */
+  }
+
+  .board.size-6x6 .cell {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .board.size-9x9 .cell {
+    width: 30px;
+    height: 30px;
+    font-size: 0.8rem;
+  }
+
   body {
-    height: auto; /* Permite que el contenido se ajuste en altura en móviles */
-    overflow-x: hidden; /* Eliminar scroll horizontal en móviles */
+    height: 100vh; /* Asegurar que el cuerpo ocupe todo el alto de la pantalla */
+    overflow-x: hidden; /* Evitar scroll horizontal en móviles */
+    overflow-y: hidden; /* Evitar scroll vertical en móviles */
   }
 }
 
-    h1 {
-      font-size: 2rem;
-    }
-
-    .btn {
-      font-size: 0.9rem;
-      padding: 10px 20px;
-    }
-
-    .board {
-      grid-template-columns: repeat(3, 80px);
-    }
-
-    .cell {
-      width: 80px;
-      height: 80px;
-      font-size: 2.5rem;
-	  
-    }
-	
-  }
 </style>
 </head>
 <body>
