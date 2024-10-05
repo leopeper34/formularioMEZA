@@ -1,4 +1,4 @@
-<html><head><base href="https://juegodetriple.com/">
+<html><head><base href="">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tres en Ralla - Modo Oscuro Moderno</title>
@@ -13,27 +13,28 @@
   }
 
   body {
-    font-family: 'Poppins', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    overflow: hidden; /* Prevents scrollbars */
+     font-family: 'Poppins', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  overflow-x: hidden; /* Evitar scroll horizontal */
   }
 
   .container {
-    text-align: center;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 2rem;
-    border-radius: 20px;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    backdrop-filter: blur(4px);
-    width: 100%; /* Take full width */
-    max-width: 600px; /* Maximum width for desktop */
-    box-sizing: border-box; /* Include padding in the width calculation */
+     width: 100vw; /* Ocupa todo el ancho de la pantalla en computadoras */
+  max-width: 1200px; /* Limitar el ancho en dispositivos más grandes */
+  text-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   }
 
   h1 {
@@ -348,110 +349,60 @@
     border-radius: 5px;
   }
 
-  @media (max-width: 768px) {
-    .container {
-      padding: 1rem;
-      max-width: 100%;
-      box-sizing: border-box;
-    }
-
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-    }
-
-    .btn {
-      width: 100%;
-      max-width: 250px;
-      font-size: 1rem;
-      padding: 10px 20px;
-    }
-
-    .board {
-      margin-bottom: 20px;
-    }
-
-    .board.size-3x3 {
-      grid-template-columns: repeat(3, 80px);
-    }
-
-    .board.size-6x6 {
-      grid-template-columns: repeat(6, 40px);
-    }
-
-    .board.size-9x9 {
-      grid-template-columns: repeat(9, 30px);
-    }
-
-    .board.size-3x3 .cell {
-      width: 80px;
-      height: 80px;
-      font-size: 2.5rem;
-    }
-
-    .board.size-6x6 .cell {
-      width: 40px;
-      height: 40px;
-      font-size: 1.2rem;
-    }
-
-    .board.size-9x9 .cell {
-      width: 30px;
-      height: 30px;
-      font-size: 1rem;
-    }
-
-    #status {
-      font-size: 1.2rem;
-      margin-bottom: 15px;
-    }
-
-    .scores {
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .score {
-      margin-bottom: 10px;
-    }
-
-    .modal-content {
-      width: 90%;
-      max-width: 300px;
-    }
-  }
-
   @media (max-width: 480px) {
-    .board.size-3x3 {
-      grid-template-columns: repeat(3, 70px);
-    }
-
-    .board.size-3x3 .cell {
-      width: 70px;
-      height: 70px;
-      font-size: 2rem;
-    }
-
-    .board.size-6x6 {
-      grid-template-columns: repeat(6, 35px);
-    }
-
-    .board.size-6x6 .cell {
-      width: 35px;
-      height: 35px;
-      font-size: 1rem;
-    }
-
-    .board.size-9x9 {
-      grid-template-columns: repeat(9, 25px);
-    }
-
-    .board.size-9x9 .cell {
-      width: 25px;
-      height: 25px;
-      font-size: 0.8rem;
-    }
+  .container {
+    width: 90vw; /* Ajustar el contenedor al 90% del ancho de la pantalla */
+    padding: 1rem;
   }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .btn {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+  }
+
+  /* Ajustar las celdas y el tablero en la versión móvil */
+  .board.size-9x9 {
+    grid-template-columns: repeat(9, 8vw); /* Tamaño de celdas basado en el ancho de la pantalla */
+  }
+
+  .board.size-9x9 .cell {
+    width: 8vw;  /* El ancho de cada celda será el 8% del ancho de la pantalla */
+    height: 8vw; /* El alto será igual al ancho */
+    font-size: 0.7rem; /* Ajustar el tamaño del texto dentro de las celdas */
+  }
+
+  .board.size-6x6 {
+    grid-template-columns: repeat(6, 12vw); /* Ajustar las celdas para el tablero 6x6 */
+  }
+
+  .board.size-6x6 .cell {
+    width: 12vw; /* El ancho de cada celda será el 12% del ancho de la pantalla */
+    height: 12vw;
+    font-size: 1rem;
+  }
+
+  .board.size-3x3 {
+    grid-template-columns: repeat(3, 25vw); /* Ajustar las celdas para el tablero 3x3 */
+  }
+
+  .board.size-3x3 .cell {
+    width: 25vw;
+    height: 25vw;
+    font-size: 1.5rem;
+  }
+
+  body {
+    height: 100vh;
+    overflow-x: hidden; /* Evitar scroll horizontal */
+    overflow-y: hidden; /* Evitar scroll vertical */
+  }
+}
+
+
 </style>
 </head>
 <body>
