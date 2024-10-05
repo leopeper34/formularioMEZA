@@ -13,7 +13,7 @@
   }
 
   body {
-    font-family: 'Poppins', sans-serif;
+     font-family: 'Poppins', sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25,7 +25,7 @@
   }
 
   .container {
-    width: 100vw; /* Ocupa todo el ancho de la pantalla en computadoras */
+     width: 100vw; /* Ocupa todo el ancho de la pantalla en computadoras */
   max-width: 1200px; /* Limitar el ancho en dispositivos más grandes */
   text-align: center;
   background: rgba(255, 255, 255, 0.05);
@@ -347,79 +347,6 @@
     border: 1px solid var(--primary-color);
     color: var(--text-color);
     border-radius: 5px;
-  }
-
-  @media (max-width: 768px) {
-    .container {
-      padding: 1rem;
-      max-width: 100%;
-      box-sizing: border-box;
-    }
-
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-    }
-
-    .btn {
-      width: 100%;
-      max-width: 250px;
-      font-size: 1rem;
-      padding: 10px 20px;
-    }
-
-    .board {
-      margin-bottom: 20px;
-    }
-
-    .board.size-3x3 {
-      grid-template-columns: repeat(3, 80px);
-    }
-
-    .board.size-6x6 {
-      grid-template-columns: repeat(6, 40px);
-    }
-
-    .board.size-9x9 {
-      grid-template-columns: repeat(9, 30px);
-    }
-
-    .board.size-3x3 .cell {
-      width: 80px;
-      height: 80px;
-      font-size: 2.5rem;
-    }
-
-    .board.size-6x6 .cell {
-      width: 40px;
-      height: 40px;
-      font-size: 1.2rem;
-    }
-
-    .board.size-9x9 .cell {
-      width: 30px;
-      height: 30px;
-      font-size: 1rem;
-    }
-
-    #status {
-      font-size: 1.2rem;
-      margin-bottom: 15px;
-    }
-
-    .scores {
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .score {
-      margin-bottom: 10px;
-    }
-
-    .modal-content {
-      width: 90%;
-      max-width: 300px;
-    }
   }
 
   @media (max-width: 480px) {
