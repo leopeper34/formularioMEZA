@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration Form</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -127,46 +129,39 @@
     </div>
 
     <script>
-        // Initialize Supabase client
-        const supabaseUrl = 'https://zzwswrlzrxzwspexvpnq.supabase.co'
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6d3N3cmx6cnh6d3NwZXh2cG5xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4NzQyNDMsImV4cCI6MjA3NjQ1MDI0M30.WkRNuuluHNFuplX8bVZBOHZ_vVLO1cvWgMyvbzA5P0o'
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey)
+  const { createClient } = supabase
 
-        document.getElementById('registrationForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const formData = {
-                full_name: document.getElementById('fullName').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                department: document.getElementById('department').value
-            }
+  const supabaseUrl = 'https://zzwswrlzrxzwspexvpnq.supabase.co'
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6d3N3cmx6cnh6d3NwZXh2cG5xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4NzQyNDMsImV4cCI6MjA3NjQ1MDI0M30.WkRNuuluHNFuplX8bVZBOHZ_vVLO1cvWgMyvbzA5P0o' // Reemplaza con tu anon key
 
-            try {
-                const { data, error } = await supabase
-                    .from('registrations')  // Replace with your table name
-                    .insert([formData])
+  const supabaseClient = createClient(supabaseUrl, supabaseKey)
 
-                if (error) throw error
+  document.getElementById('registrationForm').addEventListener('submit', async (e) => {
+    e.preventDefault()
 
-                document.getElementById('successAlert').style.display = 'block'
-                document.getElementById('errorAlert').style.display = 'none'
-                document.getElementById('registrationForm').reset()
+    const formData = {
+      full_name: document.getElementById('fullName').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      department: document.getElementById('department').value
+    }
 
-                setTimeout(() => {
-                    document.getElementById('successAlert').style.display = 'none'
-                }, 3000)
+    const { data, error } = await supabaseClient
+      .from('registrations')
+      .insert([formData])
 
-            } catch (error) {
-                console.error('Error:', error)
-                document.getElementById('errorAlert').style.display = 'block'
-                document.getElementById('successAlert').style.display = 'none'
+    console.log('Data:', data)
+    console.log('Error:', error)
 
-                setTimeout(() => {
-                    document.getElementById('errorAlert').style.display = 'none'
-                }, 3000)
-            }
-        })
+    if (error) {
+      document.getElementById('errorAlert').style.display = 'block'
+      document.getElementById('successAlert').style.display = 'none'
+    } else {
+      document.getElementById('successAlert').style.display = 'block'
+      document.getElementById('errorAlert').style.display = 'none'
+      document.getElementById('registrationForm').reset()
+    }
+  })
     </script>
 </body>
 </html>
