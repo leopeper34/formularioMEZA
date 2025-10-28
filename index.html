@@ -1,167 +1,333 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Form</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
+    <title>Equipo de Programación</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f5;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
             margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
+            padding: 0;
+            scroll-behavior: smooth;
         }
 
-        .form-container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        /* NAVBAR */
+        nav {
+            position: fixed;
+            top: 0;
             width: 100%;
-            max-width: 500px;
+            background: rgba(15, 32, 39, 0.95);
+            backdrop-filter: blur(6px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            z-index: 999;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
         }
 
-        h2 {
+        .logo {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #00f2fe;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #00f2fe;
+        }
+
+        /* CONTENIDO PRINCIPAL */
+        section {
+            padding: 100px 20px 60px 20px;
             text-align: center;
-            color: #333;
+        }
+
+        h1 {
+            font-size: 2.3em;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
             margin-bottom: 30px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
+        /* TARJETAS DE INTEGRANTES */
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-            font-weight: 500;
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            width: 220px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        input, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            box-sizing: border-box;
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0, 242, 254, 0.5);
         }
 
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 12px 20px;
+        .card h3 {
+            color: #00f2fe;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            margin: 4px 0;
+            font-size: 0.95em;
+        }
+
+        .card button {
+            margin-top: 10px;
+            background: linear-gradient(45deg, #00B4DB, #0083B0);
             border: none;
-            border-radius: 5px;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
             cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .card button:hover {
+            transform: scale(1.05);
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+        }
+
+        /* GALERÍA */
+        .galeria {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .galeria img {
             width: 100%;
-            font-size: 16px;
-            transition: background-color 0.3s;
+            border-radius: 12px;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        button:hover {
-            background-color: #45a049;
+        .galeria img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
         }
 
-        .alert {
-            padding: 10px;
-            margin-top: 20px;
-            border-radius: 5px;
+        /* MODAL */
+        .modal {
             display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            animation: fadeIn 0.3s;
         }
 
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+        .modal-content {
+            background: #1e293b;
+            margin: 5% auto;
+            padding: 20px 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            color: white;
+            box-shadow: 0 0 25px rgba(0,0,0,0.5);
+            animation: popup 0.4s ease;
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
-        .alert-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+        @keyframes popup {
+            from {transform: scale(0.8); opacity: 0;}
+            to {transform: scale(1); opacity: 1;}
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 25px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #fff;
+        }
+
+        .profile-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            margin: 0 auto 10px auto;
+        }
+
+        .nombre { font-size: 1.4em; font-weight: 600; text-align: center; }
+        .semestre { color: #a5b4fc; margin-bottom: 20px; text-align: center; }
+
+        .section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .section h3 {
+            margin: 0 0 8px 0;
+            color: #60a5fa;
+            font-size: 1em;
+        }
+
+        .section p, .section a {
+            font-size: 0.95em;
+            color: #e2e8f0;
+            text-decoration: none;
+        }
+
+        .section a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <div class="form-container">
-        <h2>Registration Form</h2>
-        <form id="registrationForm">
-            <div class="form-group">
-                <label for="fullName">Full Name</label>
-                <input type="text" id="fullName" name="fullName" required>
-            </div>
 
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-
-            <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" required>
-            </div>
-
-            <div class="form-group">
-                <label for="department">Department</label>
-                <select id="department" name="department" required>
-                    <option value="">Select Department</option>
-                    <option value="sales">Sales</option>
-                    <option value="marketing">Marketing</option>
-                    <option value="it">IT</option>
-                    <option value="hr">HR</option>
-                </select>
-            </div>
-
-            <button type="submit">Submit</button>
-        </form>
-        <div id="successAlert" class="alert alert-success">
-            Registration successful!
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo">💻 Equipo 5° Programación</div>
+        <div class="nav-links">
+            <a href="#nosotros">Nosotros</a>
+            <a href="#galeria">Galería</a>
         </div>
-        <div id="errorAlert" class="alert alert-error">
-            An error occurred. Please try again.
+    </nav>
+
+    <!-- SECCIÓN NOSOTROS -->
+    <section id="nosotros">
+        <h1>Integrantes del Equipo</h1>
+        <div class="card-container" id="tarjetas"></div>
+    </section>
+
+    <!-- SECCIÓN GALERÍA -->
+    <section id="galeria">
+        <h1>Galería del Equipo</h1>
+        <div class="galeria">
+            <img src="img/Captura de pantalla 2025-10-24 154204.png" alt="Integrante 1">
+            <img src="img/Captura de pantalla 2025-10-24 154224.png" alt="Integrante 2">
+            <img src="img/img3.jpg" alt="Integrante 3">
+            <img src="img/Captura de pantalla 2025-10-24 154214.png" alt="Integrante 4">
+            <img src="img/img5.jpg" alt="Integrante 5">
+            <img src="img/img6.jpg" alt="Integrante 6">
+            <img src="img/img7.jpg" alt="Integrante 7">
+            <img src="img/Captura de pantalla 2025-10-24 154235.png" alt="Integrante 8">
+        </div>
+    </section>
+
+    <!-- MODAL -->
+    <div id="miModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal()">&times;</span>
+            <div class="profile-icon" id="icono"></div>
+            <div class="nombre" id="nombre"></div>
+            <div class="semestre" id="semestre"></div>
+
+            <div class="section">
+                <h3>🏫 Institución</h3>
+                <p id="institucion"></p>
+            </div>
+
+            <div class="section">
+                <h3>💻 Sobre mí</h3>
+                <p id="descripcion"></p>
+            </div>
+
+            <div class="section">
+                <h3>📸 Instagram</h3>
+                <a href="#" id="instagram" target="_blank"></a>
+            </div>
         </div>
     </div>
 
     <script>
-  const { createClient } = supabase
+        const integrantes = [
+            { nombre: "Jorge Eduardo Guzmán García", edad: 17, religion: "Católico", estado: "Soltero", semestre: "5to Semestre - Programación", institucion: "CBTIS No. 168 Francisco I. Madero", descripcion: "Alumno de bachillerato en 5° semestre, especializado en programación.", instagram: "@jorge_edu_guzman" },
+            { nombre: "Julio Abraham Pérez Álvarez", edad: 17, religion: "Cristiano", estado: "En relación", semestre: "5to Semestre - Programación", institucion: "CBTIS No. 168 Francisco I. Madero", descripcion: "Estudiante en el turno vespertino. Amante de la música y los videojuegos.", instagram: "@jp17.h" },
+            { nombre: "Mauricio Mora Castañeda", edad: 17, religion: "Agnóstico", estado: "Soltero", semestre: "5to Semestre - Programación", institucion: "CBTIS No. 168 Francisco I. Madero", descripcion: "Responsable, creativo y comprometido con sus estudios.", instagram: "@mau._.mora" },
+            { nombre: "Christopher González Muñoz", edad: 17, religion: "Católico", estado: "En relación", semestre: "5to Semestre - Programación", institucion: "CBTIS No. 168 Francisco I. Madero", descripcion: "Apasionado por la tecnología y la innovación.", instagram: "@c_gz.m" },
+            { nombre: "Jacob Santiago Calvillo Guzmán", edad: 17, religion: "Testigo de Jehová", estado: "Soltero", semestre: "5to Semestre - Programación", institucion: "CBTIS No. 168 Francisco I. Madero", descripcion: "Le gusta aprender nuevos lenguajes y desarrollar sus propios proyectos.", instagram: "@jacobsantiago" },
+            { nombre: "Ángel Fernando Meza Jasso", edad: 17, religion: "Cristiano", estado: "Soltero", semestre: "5to Semestre - Programación", institucion: "CBTIS No. 168 Francisco I. Madero", descripcion: "Disfruta aprender cosas nuevas y programar en su tiempo libre.", instagram: "@angelmeza" },
+            { nombre: "Leonardo Zamarripa Ramírez", edad: 17, religion: "Católico", estado: "Soltero", semestre: "5to Semestre - Programación", institucion: "CBTIS No. 168 Francisco I. Madero", descripcion: "Me gusta la música, andar en bicicleta y disfrutar los paisajes.", instagram: "@leozama21" },
+            { nombre: "Sebastián Joshua Chávez Azcona", edad: 17, religion: "Ateo", estado: "En relación", semestre: "5to Semestre - Programación", institucion: "CBTIS No. 168 Francisco I. Madero", descripcion: "Alegre, auténtico y con buen sentido del humor.", instagram: "@caz_joshua" }
+        ];
 
-  const supabaseUrl = 'https://zzwswrlzrxzwspexvpnq.supabase.co'
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6d3N3cmx6cnh6d3NwZXh2cG5xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4NzQyNDMsImV4cCI6MjA3NjQ1MDI0M30.WkRNuuluHNFuplX8bVZBOHZ_vVLO1cvWgMyvbzA5P0o' // Reemplaza con tu anon key
+        // Generar tarjetas automáticamente
+        const contenedor = document.getElementById("tarjetas");
+        integrantes.forEach((persona, i) => {
+            const card = document.createElement("div");
+            card.classList.add("card");
+            card.innerHTML = `
+                <h3>${persona.nombre}</h3>
+                <p><strong>Edad:</strong> ${persona.edad} años</p>
+                <p><strong>Religión:</strong> ${persona.religion}</p>
+                <p><strong>Estado:</strong> ${persona.estado}</p>
+                <button onclick="abrirModal(${i})">Ver perfil</button>
+            `;
+            contenedor.appendChild(card);
+        });
 
-  const supabaseClient = createClient(supabaseUrl, supabaseKey)
+        // Modal
+        function abrirModal(index) {
+            const modal = document.getElementById("miModal");
+            const persona = integrantes[index];
+            document.getElementById("icono").textContent = persona.nombre.split(" ")[0][0] + persona.nombre.split(" ")[1][0];
+            document.getElementById("nombre").textContent = persona.nombre;
+            document.getElementById("semestre").textContent = persona.semestre;
+            document.getElementById("institucion").textContent = persona.institucion;
+            document.getElementById("descripcion").textContent = persona.descripcion;
+            document.getElementById("instagram").textContent = persona.instagram;
+            document.getElementById("instagram").href = "https://instagram.com/" + persona.instagram.replace("@", "");
+            modal.style.display = "block";
+        }
 
-  document.getElementById('registrationForm').addEventListener('submit', async (e) => {
-    e.preventDefault()
+        function cerrarModal() {
+            document.getElementById("miModal").style.display = "none";
+        }
 
-    const formData = {
-      full_name: document.getElementById('fullName').value,
-      email: document.getElementById('email').value,
-      phone: document.getElementById('phone').value,
-      department: document.getElementById('department').value
-    }
-
-    const { data, error } = await supabaseClient
-      .from('registrations')
-      .insert([formData])
-
-    console.log('Data:', data)
-    console.log('Error:', error)
-
-    if (error) {
-      document.getElementById('errorAlert').style.display = 'block'
-      document.getElementById('successAlert').style.display = 'none'
-    } else {
-      document.getElementById('successAlert').style.display = 'block'
-      document.getElementById('errorAlert').style.display = 'none'
-      document.getElementById('registrationForm').reset()
-    }
-  })
+        window.onclick = function(e) {
+            const modal = document.getElementById("miModal");
+            if (e.target === modal) modal.style.display = "none";
+        };
     </script>
+
 </body>
 </html>
